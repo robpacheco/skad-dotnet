@@ -1,0 +1,6 @@
+kind: Kustomization
+
+resources:
+  - ns.yaml
+  - postgres.yaml
+  - vulnfeed.yaml

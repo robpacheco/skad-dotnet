@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vulnfeed
+  namespace: skad
+  labels:
+    app: vulnfeed
+spec:
+  selector:
+    matchLabels:
+      app: vulnfeed
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vulnfeed
+    spec:
+      containers:
+        - name: vulnfeed
+          image: skad-vulnfeed:latest
+          ports:
+            - containerPort: 80
+          imagePullPolicy: "Never" # Change this if needed.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnfeed
+  namespace: skad
+  labels:
+    app: vulnfeed
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      
+  selector:
+    app: vulnfeed

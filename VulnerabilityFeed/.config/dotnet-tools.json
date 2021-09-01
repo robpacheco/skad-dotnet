@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "evolve.tool": {
+      "version": "2.4.0",
+      "commands": [
+        "evolve"
+      ]
+    }
+  }
+}

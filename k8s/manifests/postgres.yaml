@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: skad
+  labels:
+    app: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: skad-postgres:latest
+          ports:
+          - containerPort: 5432
+          env:
+          - name: POSTGRES_PASSWORD
+            value: secret # This is secret, it should not be here 
+          imagePullPolicy: "Never" # Change this if needed.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: skad
+  labels:
+    app: postgres
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres
