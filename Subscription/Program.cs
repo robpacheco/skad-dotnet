@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Events;
 using Skad.Common.Host;
 
-namespace Skad.VulnFeed
+namespace Skad.Subscription
 {
     public class Program
     {

@@ -1,0 +1,123 @@
+@model Skad.Subscription.MvcControllers.ViewModels.SubscriptionModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <style>
+        .container1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgb(127,163,237);
+        }
+
+        .container2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .container3 {
+            display: flex;
+            justify-content: flex-start;
+            align-items: baseline;
+            margin-bottom: 20px;
+        }
+        
+        .left {
+           float:left; 
+           clear: left;
+        }
+
+        h1 {
+            padding: 0;
+            margin: 0;
+        }
+        
+        body {
+            margin: auto;
+            width: 80%;
+            padding: 10px;
+            background: #D8EEFF;
+        }
+        
+        header {
+            border-top: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+        
+        table {
+            margin: 30px auto;
+            width: 98%;
+            padding: 20px 10px 50px;
+            border-collapse: collapse;
+        }
+        
+        th {
+            border: 3px solid black;
+            background: rgb(127,163,237);
+        }
+        
+        td {
+            border: 1px solid black;
+        }        
+        
+        tr:nth-child(odd) {   
+            background-color:#FFFFFF; 
+        } 
+        
+        tr:nth-child(even) {   
+            background-color:#EFFFFF; 
+        }     
+    </style>
+    <title>Manage Subscription</title>
+</head>
+<body>
+<header class="container1">
+    <h1>SecurityNewsSource</h1>
+    <h3>Welcome, User</h3>
+</header>
+<div class="container3">
+    <form method="POST">
+        <div class="left">
+            @Html.ValidationSummary(false, "", new { })
+        </div>
+        <div class="left" style="font-weight: bold;">Update Subscription</div>
+        <div class="left">
+            @Html.RadioButtonFor(m => m.SubscriptionTier, "free")
+            @Html.Label("free", "Free")
+        </div>
+        <div class="left">
+            @Html.RadioButtonFor(m => m.SubscriptionTier, "developer")
+            @Html.Label("developer", "Developer")
+        </div>
+        <div class="left">
+            @Html.RadioButtonFor(m => m.SubscriptionTier, "startup")
+            @Html.Label("startup", "Startup")
+        </div>
+        <div class="left">
+            @Html.RadioButtonFor(m => m.SubscriptionTier, "enterprise")
+            @Html.Label("enterprise", "Enterprise")
+        </div>
+        <div class="left">
+            @Html.LabelFor(m => m.NameOnCard, "Name on Card:")
+            @Html.TextBoxFor(m => m.NameOnCard)
+        </div>
+        <div class="left">
+            @Html.LabelFor(m => m.CardNumber, "Card Number:")
+            @Html.TextBoxFor(m => m.CardNumber)
+        </div>
+        <div>
+            <input class="left" type="submit" value="Submit"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

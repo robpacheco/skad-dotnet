@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,13 +8,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Skad.Common.Http;
-using Skad.VulnFeed.ApiControllers.Endpoints;
-using Skad.VulnFeed.Data;
-using Skad.VulnFeed.Data.Model;
-using Skad.VulnFeed.Domain.Repository;
-using Skad.VulnFeed.Domain.Service;
+using Skad.Subscription.Data;
+using Skad.Subscription.Data.Model;
+using Skad.Subscription.Domain;
+using Skad.Subscription.Domain.Repository;
+using Skad.Subscription.Domain.Service;
 
-namespace Skad.VulnFeed
+namespace Skad.Subscription
 {
     public class Startup
     {
@@ -24,6 +25,7 @@ namespace Skad.VulnFeed
 
         public IConfiguration Configuration { get; }
 
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             SetupLogging();
@@ -31,20 +33,22 @@ namespace Skad.VulnFeed
             services.AddMvc();
             services.AddControllers();
 
-            services.AddScoped<IVulnerabilityFeedRepository, VulnerabilityFeedRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             
-            services.AddScoped<IVulnerabilityFeedService, VulnerabilityFeedService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
 
             services.AddHttpContextAccessor();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<LinkGenerator>();
-            services.AddScoped<VulnerabilityFeedEndpoints>();
+            services.AddSingleton<SubscriptionTiers>();
 
-            services.AddDbContext<VulnFeedDbContext>(options =>
+            services.AddDbContext<SubscriptionDbContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
         }
 
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
@@ -70,7 +74,7 @@ namespace Skad.VulnFeed
                 endpoints.MapControllers();
             });
         }
-
+        
         private void SetupLogging()
         {
             Log.Logger = new LoggerConfiguration()
