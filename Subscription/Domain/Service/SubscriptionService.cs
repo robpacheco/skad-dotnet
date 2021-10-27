@@ -8,12 +8,10 @@ namespace Skad.Subscription.Domain.Service
     public class SubscriptionService : ISubscriptionService
     {
         private readonly ISubscriptionRepository _subscriptionRepository;
-        private readonly SubscriptionTiers _subscriptionTiers;
 
-        public SubscriptionService(ISubscriptionRepository subscriptionRepository, SubscriptionTiers subscriptionTiers)
+        public SubscriptionService(ISubscriptionRepository subscriptionRepository)
         {
             _subscriptionRepository = subscriptionRepository ?? throw new ArgumentNullException(nameof(subscriptionRepository));
-            _subscriptionTiers = subscriptionTiers ?? throw new ArgumentNullException(nameof(subscriptionTiers));
         }
 
         public async Task<Data.Model.Subscription?> FindLatestActiveSubscription()
