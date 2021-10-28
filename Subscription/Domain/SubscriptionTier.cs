@@ -50,7 +50,7 @@ namespace Skad.Subscription.Domain
         {
         }
 
-        public SubscriptionTiers(IEnumerable<SubscriptionTier> tiers)
+        private SubscriptionTiers(IEnumerable<SubscriptionTier> tiers)
         {
             _tiers = tiers.Where(t => t.IsValid()).ToList();
         }
@@ -58,6 +58,17 @@ namespace Skad.Subscription.Domain
         public bool IsValidTierName(string tierName)
         {
             return _tiers.Any(t => t.TierName != null && t.TierName.Equals(tierName, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        public SubscriptionTier? FindTier(string? tierName)
+        {
+            if (tierName == null)
+            {
+                return null;
+            }
+            
+            return _tiers.FirstOrDefault(t => t.TierName != null &&
+            t.TierName.Equals(tierName, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

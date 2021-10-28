@@ -17,7 +17,7 @@ namespace Skad.Subscription.MvcControllers
         private readonly SubscriptionTiers _tiers;
         private readonly IActionContextAccessor _actionContextAccessor;
 
-        public SubscriptionController(ISubscriptionService subscriptionService, LinkGenerator linkGenerator, SubscriptionTiers tiers, IActionContextAccessor actionContextAccessor)
+        public SubscriptionController(ISubscriptionService subscriptionService, SubscriptionTiers tiers, IActionContextAccessor actionContextAccessor)
         {
             _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
             _tiers = tiers ?? throw new ArgumentNullException(nameof(tiers));
@@ -39,7 +39,15 @@ namespace Skad.Subscription.MvcControllers
                 return View("Subscription", model);
             }
 
-            await _subscriptionService.AddSubscription(model.ToSubscription());
+            var tier = _tiers.FindTier(model.SubscriptionTier);
+
+            if (tier == null)
+            {
+                ModelState.AddModelError("SubscriptionTier", $"Subscription tier was not found: {model.SubscriptionTier}");
+                return View("Subscription", model);
+            }
+
+            await _subscriptionService.AddSubscription(model.ToSubscription(), tier);
             
             return Redirect("http://localhost:5000/vulnerability-feed");
         }

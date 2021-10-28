@@ -28,13 +28,13 @@ namespace Skad.Subscription.Data
 
             if (!subscriptions.Any())
             {
-                // TODO: Log
+                _logger.LogError("Could not find any active subscriptions.");
                 return null;
             }
 
             if (subscriptions.Count > 1)
             {
-                // TODO: Log
+                _logger.LogWarning($"Found: {subscriptions.Count} active subscriptions.");
             }
 
             return subscriptions.First();
@@ -61,6 +61,11 @@ namespace Skad.Subscription.Data
             }
 
             await _context.SaveChangesAsync();
+
+            if (currentSubscriptions.Any())
+            {
+                _logger.LogDebug($"Deactivated {currentSubscriptions.Count} subscriptions.");
+            }
         }
     }
 }
