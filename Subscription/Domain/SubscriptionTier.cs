@@ -6,14 +6,16 @@ namespace Skad.Subscription.Domain
 {
     public class SubscriptionTier
     {
-        public string? TierName { get; set; }
-        public decimal? TierPrice { get; set; }
-        public int? TierDurationDays { get; set; }
-
-        public bool IsValid()
+        public SubscriptionTier(string tierName, decimal tierPrice, int tierDurationDays)
         {
-            return true;
+            TierName = tierName;
+            TierPrice = tierPrice;
+            TierDurationDays = tierDurationDays;
         }
+
+        public string TierName { get; }
+        public decimal TierPrice { get; }
+        public int TierDurationDays { get; }
     }
 
     public class SubscriptionTiers
@@ -22,42 +24,22 @@ namespace Skad.Subscription.Domain
 
         public SubscriptionTiers() : this(new List<SubscriptionTier>
         {
-            new SubscriptionTier
-            {
-                TierName = "free",
-                TierPrice = (decimal)0.00,
-                TierDurationDays = 30
-            },
-            new SubscriptionTier
-            {
-                TierName = "developer",
-                TierPrice = (decimal)9.99,
-                TierDurationDays = 30
-            },
-            new SubscriptionTier
-            {
-                TierName = "startup",
-                TierPrice = (decimal)99.99,
-                TierDurationDays = 30
-            },
-            new SubscriptionTier
-            {
-                TierName = "enterprise",
-                TierPrice = (decimal)100000.00,
-                TierDurationDays = 365
-            }
+            new SubscriptionTier(tierName: "free", tierPrice: (decimal)0.00, tierDurationDays: 30),
+            new SubscriptionTier(tierName: "developer", tierPrice: (decimal)9.99, tierDurationDays: 30),
+            new SubscriptionTier(tierName: "startup", tierPrice: (decimal)99.99, tierDurationDays: 30),
+            new SubscriptionTier(tierName: "enterprise", tierPrice: (decimal)100000.00, tierDurationDays: 365)
         })
         {
         }
 
         private SubscriptionTiers(IEnumerable<SubscriptionTier> tiers)
         {
-            _tiers = tiers.Where(t => t.IsValid()).ToList();
+            _tiers = tiers.ToList();
         }
 
         public bool IsValidTierName(string tierName)
         {
-            return _tiers.Any(t => t.TierName != null && t.TierName.Equals(tierName, StringComparison.CurrentCultureIgnoreCase));
+            return _tiers.Any(t => t.TierName.Equals(tierName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public SubscriptionTier? FindTier(string? tierName)
@@ -67,8 +49,7 @@ namespace Skad.Subscription.Domain
                 return null;
             }
             
-            return _tiers.FirstOrDefault(t => t.TierName != null &&
-            t.TierName.Equals(tierName, StringComparison.CurrentCultureIgnoreCase));
+            return _tiers.FirstOrDefault(t => t.TierName.Equals(tierName, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }
