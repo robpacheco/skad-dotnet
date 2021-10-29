@@ -28,7 +28,7 @@ namespace Skad.Subscription.MvcControllers.Extensions
             {
                 Tier = model.SubscriptionTier,
                 CardName = model.NameOnCard,
-                CardLast4 = model.CardNumber.Substring(13)
+                CardLast4 = model.CardNumber?.Substring(13)
             };
         }
     }

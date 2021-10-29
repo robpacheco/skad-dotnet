@@ -4,8 +4,8 @@ CREATE TABLE public.subscription (
     active bool NOT NULL,
     date_purchased timestamp with time zone NOT NULL,
     date_expires timestamp with time zone NOT NULL,
-    card_name text NOT NULL,
-    card_last4 text NOT NULL,
+    card_name text,
+    card_last4 text,
     amount_paid numeric(10, 2) NOT NULL
 );
 

@@ -31,7 +31,7 @@ namespace Skad.Subscription.Data.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "C");
+            modelBuilder.HasAnnotation("Relational:Collation", "en_US.utf8");
 
             modelBuilder.Entity<Changelog>(entity =>
             {
@@ -83,13 +83,9 @@ namespace Skad.Subscription.Data.Model
                     .HasPrecision(10, 2)
                     .HasColumnName("amount_paid");
 
-                entity.Property(e => e.CardLast4)
-                    .IsRequired()
-                    .HasColumnName("card_last4");
+                entity.Property(e => e.CardLast4).HasColumnName("card_last4");
 
-                entity.Property(e => e.CardName)
-                    .IsRequired()
-                    .HasColumnName("card_name");
+                entity.Property(e => e.CardName).HasColumnName("card_name");
 
                 entity.Property(e => e.DateExpires)
                     .HasColumnType("timestamp with time zone")
