@@ -8,37 +8,41 @@ namespace Skad.Common.Http
 {
     public class LinkGenerator
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly EndpointSettings _endpointSettings;
 
-        public LinkGenerator(IHttpContextAccessor contextAccessor)
+        public LinkGenerator(IOptions<EndpointSettings> endpointSettings)
         {
-            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+            _endpointSettings = endpointSettings.Value ?? throw new ArgumentNullException(nameof(endpointSettings));
         }
 
-        public Uri GenerateUri(params string[] pathComponents)
+        public Uri GenerateVulnerabilityFeedUri(params string[] pathComponents)
         {
-            var uriBuilder = MakeUriBuilder();
+            if (string.IsNullOrWhiteSpace(_endpointSettings.VulnerabilityFeedBaseUrl))
+            {
+                throw new Exception("VulnerabilityFeedBaseUrl must have a value.");
+            }
+            
+            var uriBuilder = MakeUriBuilder(_endpointSettings.VulnerabilityFeedBaseUrl);
             uriBuilder.Path = Path.Combine(pathComponents);
             return uriBuilder.Uri;
         }
 
-        private UriBuilder MakeUriBuilder()
+        public Uri GenerateSubscriptionUri(params string[] pathComponents)
         {
-            var httpRequest = GetHttpRequest();
-            var uriBuilder = new UriBuilder {Scheme = httpRequest.Scheme, Host = httpRequest.Host.Host};
-            var port = httpRequest.Host.Port;
-
-            if (port.HasValue)
+            if (string.IsNullOrWhiteSpace(_endpointSettings.SubscriptionBaseUrl))
             {
-                uriBuilder.Port = port.Value;
+                throw new Exception("SubscriptionBaseUrl must have a value.");
             }
-
-            return uriBuilder;
+            
+            var uriBuilder = MakeUriBuilder(_endpointSettings.SubscriptionBaseUrl);
+            uriBuilder.Path = Path.Combine(pathComponents);
+            return uriBuilder.Uri;
         }
-        
-        private HttpRequest GetHttpRequest()
+
+        private UriBuilder MakeUriBuilder(string baseUrl)
         {
-            return _contextAccessor.HttpContext.Request;
+            var uriBuilder = new UriBuilder(baseUrl);
+            return uriBuilder;
         }
     }
 }
