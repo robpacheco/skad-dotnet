@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Skad.Subscription.Config;
 using Skad.Subscription.Domain.Repository;
 
 namespace Skad.Subscription.Domain.Service
@@ -12,10 +14,10 @@ namespace Skad.Subscription.Domain.Service
         private readonly SubscriptionTiers _tiers;
         private readonly ILogger<SubscriptionService> _logger;
 
-        public SubscriptionService(ISubscriptionRepository subscriptionRepository, SubscriptionTiers tiers, ILogger<SubscriptionService> logger)
+        public SubscriptionService(ISubscriptionRepository subscriptionRepository, IOptions<SubscriptionTierSettings> tierSettings, ILogger<SubscriptionService> logger)
         {
             _subscriptionRepository = subscriptionRepository ?? throw new ArgumentNullException(nameof(subscriptionRepository));
-            _tiers = tiers ?? throw new ArgumentNullException(nameof(tiers));
+            _tiers = new SubscriptionTiers(tierSettings.Value ?? throw new ArgumentNullException(nameof(tierSettings)));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

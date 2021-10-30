@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using Skad.Subscription.Config;
 
 namespace Skad.Subscription.Domain
 {
@@ -22,19 +24,22 @@ namespace Skad.Subscription.Domain
     {
         private readonly IList<SubscriptionTier> _tiers;
 
-        public SubscriptionTiers() : this(new List<SubscriptionTier>
-        {
-            new SubscriptionTier(tierName: "free", tierPrice: (decimal)0.00, tierDurationDays: 30),
-            new SubscriptionTier(tierName: "developer", tierPrice: (decimal)9.99, tierDurationDays: 30),
-            new SubscriptionTier(tierName: "startup", tierPrice: (decimal)99.99, tierDurationDays: 30),
-            new SubscriptionTier(tierName: "enterprise", tierPrice: (decimal)100000.00, tierDurationDays: 365)
-        })
-        {
-        }
+        // public SubscriptionTiers() : this(new List<SubscriptionTier>
+        // {
+        //     new SubscriptionTier(tierName: "free", tierPrice: (decimal)0.00, tierDurationDays: 30),
+        //     new SubscriptionTier(tierName: "developer", tierPrice: (decimal)9.99, tierDurationDays: 30),
+        //     new SubscriptionTier(tierName: "startup", tierPrice: (decimal)99.99, tierDurationDays: 30),
+        //     new SubscriptionTier(tierName: "enterprise", tierPrice: (decimal)100000.00, tierDurationDays: 365)
+        // })
+        // {
+        // }
 
-        private SubscriptionTiers(IEnumerable<SubscriptionTier> tiers)
+        public SubscriptionTiers(SubscriptionTierSettings settings)
         {
-            _tiers = tiers.ToList();
+            _tiers = settings.SubscriptionTiers
+                .Where(c => c.IsValid())
+                .Select(c => new SubscriptionTier(c.TierName!, c.TierPrice!.Value, c.TierDurationDays!.Value))
+                .ToImmutableList();
         }
 
         public bool IsValidTierName(string tierName)

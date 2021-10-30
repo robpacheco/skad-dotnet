@@ -2,7 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Options;
 using Skad.Common.Http;
+using Skad.Subscription.Config;
 using Skad.Subscription.Domain;
 using Skad.Subscription.Domain.Service;
 using Skad.Subscription.MvcControllers.Extensions;
@@ -17,10 +19,10 @@ namespace Skad.Subscription.MvcControllers
         private readonly SubscriptionTiers _tiers;
         private readonly IActionContextAccessor _actionContextAccessor;
 
-        public SubscriptionController(ISubscriptionService subscriptionService, SubscriptionTiers tiers, IActionContextAccessor actionContextAccessor)
+        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, IActionContextAccessor actionContextAccessor)
         {
             _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
-            _tiers = tiers ?? throw new ArgumentNullException(nameof(tiers));
+            _tiers = new SubscriptionTiers(tierSettings.Value ?? throw new ArgumentNullException(nameof(tierSettings)));
             _actionContextAccessor = actionContextAccessor;
         }
 

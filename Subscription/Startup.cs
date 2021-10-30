@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Skad.Common.Http;
+using Skad.Subscription.Config;
 using Skad.Subscription.Data;
 using Skad.Subscription.Data.Model;
 using Skad.Subscription.Domain;
@@ -18,6 +19,9 @@ namespace Skad.Subscription
 {
     public class Startup
     {
+        private static string ENDPOINT_SETTINGS_SECTION = "EndpointSettings";
+        private static string SUBSCRIPTION_TIER_SETTINGS_SECTION = "SubscriptionTierSettings";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,6 +37,9 @@ namespace Skad.Subscription
             services.AddMvc();
             services.AddControllers();
 
+            services.Configure<EndpointSettings>(Configuration.GetSection(ENDPOINT_SETTINGS_SECTION));
+            services.Configure<SubscriptionTierSettings>(Configuration.GetSection(SUBSCRIPTION_TIER_SETTINGS_SECTION));
+            
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             
             services.AddScoped<ISubscriptionService, SubscriptionService>();
@@ -40,7 +47,6 @@ namespace Skad.Subscription
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<LinkGenerator>();
-            services.AddSingleton<SubscriptionTiers>();
 
             services.AddDbContext<SubscriptionDbContext>(options =>
             {
