@@ -10,7 +10,7 @@ namespace Skad.Common.Validation
         {
             if (list == null || !list.Any())
             {
-                throw new ArgumentNullException(paramName); // TODO: Maybe a different exception?
+                throw new ArgumentNullException(paramName);
             }
 
             return list;
