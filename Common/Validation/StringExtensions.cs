@@ -8,7 +8,7 @@ namespace Skad.Common.Validation
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentNullException(paramName); // TODO: Maybe a different exception?
+                throw new ArgumentNullException(paramName);
             }
 
             return value;
