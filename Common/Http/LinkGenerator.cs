@@ -17,14 +17,7 @@ namespace Skad.Common.Http
 
         public Uri GenerateUri(params string[] pathComponents)
         {
-            var uriBuilder = MakeUriBuilder();
-            uriBuilder.Path = Path.Combine(pathComponents);
-            return uriBuilder.Uri;
-        }
-
-        private UriBuilder MakeUriBuilder()
-        {
-            var httpRequest = GetHttpRequest();
+            var httpRequest = _contextAccessor.HttpContext.Request;
             var uriBuilder = new UriBuilder {Scheme = httpRequest.Scheme, Host = httpRequest.Host.Host};
             var port = httpRequest.Host.Port;
 
@@ -33,12 +26,8 @@ namespace Skad.Common.Http
                 uriBuilder.Port = port.Value;
             }
 
-            return uriBuilder;
-        }
-        
-        private HttpRequest GetHttpRequest()
-        {
-            return _contextAccessor.HttpContext.Request;
+            uriBuilder.Path = Path.Combine(pathComponents);
+            return uriBuilder.Uri;
         }
     }
 }
