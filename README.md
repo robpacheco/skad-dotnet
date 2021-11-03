@@ -27,6 +27,12 @@ cd postgres/docker
 docker build -f Dockerfile -t skad-postgres:latest .
 ```
 
+## Removing Existing PostgreSQL Docker container
+
+```
+docker rm -f skad-pg
+```
+
 ## Running PostgreSQL in Docker
 
 Once the Postgres container image is built, it can be run in Docker and exposed locally on port 5432:
