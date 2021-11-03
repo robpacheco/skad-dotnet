@@ -22,8 +22,11 @@ namespace Skad.Common.Http
                 throw new Exception("VulnerabilityFeedBaseUrl must have a value.");
             }
             
-            var uriBuilder = MakeUriBuilder(_endpointSettings.VulnerabilityFeedBaseUrl);
-            uriBuilder.Path = Path.Combine(pathComponents);
+            var uriBuilder = new UriBuilder(_endpointSettings.VulnerabilityFeedBaseUrl)
+            {
+                Path = Path.Combine(pathComponents)
+            };
+            
             return uriBuilder.Uri;
         }
 
@@ -34,15 +37,12 @@ namespace Skad.Common.Http
                 throw new Exception("SubscriptionBaseUrl must have a value.");
             }
             
-            var uriBuilder = MakeUriBuilder(_endpointSettings.SubscriptionBaseUrl);
-            uriBuilder.Path = Path.Combine(pathComponents);
+            var uriBuilder = new UriBuilder(_endpointSettings.SubscriptionBaseUrl)
+            {
+                Path = Path.Combine(pathComponents)
+            };
+            
             return uriBuilder.Uri;
-        }
-
-        private UriBuilder MakeUriBuilder(string baseUrl)
-        {
-            var uriBuilder = new UriBuilder(baseUrl);
-            return uriBuilder;
         }
     }
 }
