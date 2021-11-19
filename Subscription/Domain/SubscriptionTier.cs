@@ -23,17 +23,7 @@ namespace Skad.Subscription.Domain
     public class SubscriptionTiers
     {
         private readonly IList<SubscriptionTier> _tiers;
-
-        // public SubscriptionTiers() : this(new List<SubscriptionTier>
-        // {
-        //     new SubscriptionTier(tierName: "free", tierPrice: (decimal)0.00, tierDurationDays: 30),
-        //     new SubscriptionTier(tierName: "developer", tierPrice: (decimal)9.99, tierDurationDays: 30),
-        //     new SubscriptionTier(tierName: "startup", tierPrice: (decimal)99.99, tierDurationDays: 30),
-        //     new SubscriptionTier(tierName: "enterprise", tierPrice: (decimal)100000.00, tierDurationDays: 365)
-        // })
-        // {
-        // }
-
+        
         public SubscriptionTiers(SubscriptionTierSettings settings)
         {
             _tiers = settings.SubscriptionTiers
