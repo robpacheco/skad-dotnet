@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Skad.Subscription.Domain;
 
 namespace Skad.Subscription.Config
 {

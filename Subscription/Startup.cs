@@ -11,7 +11,6 @@ using Skad.Common.Http;
 using Skad.Subscription.Config;
 using Skad.Subscription.Data;
 using Skad.Subscription.Data.Model;
-using Skad.Subscription.Domain;
 using Skad.Subscription.Domain.Repository;
 using Skad.Subscription.Domain.Service;
 
