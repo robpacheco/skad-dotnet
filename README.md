@@ -10,6 +10,7 @@ This section describes the layout of this repository.
 * `k8s` - Kubernetes YAML files
 * `postgres` - SKAD PostgreSQL Docker files and scripts
 * `VulnerabiltiyFeed` - The Vulnerability Feed service source and docker files
+* `Subscription` - The Subscription service source
 * `VulnerabilityFeedLoader` - Utility to load CVE data into the Vulnerability Feed
 
 More services will be added as the project continues.
