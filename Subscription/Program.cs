@@ -20,6 +20,7 @@ namespace Skad.Subscription
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((_, builder) =>
                 {
+                    builder.AddJsonFile("k8s/appsettings.prod.json", optional: true);
                     builder.AddEnvironmentVariables();
                 })
                 .UseSerilog()

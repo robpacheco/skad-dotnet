@@ -10,7 +10,7 @@ This section describes the layout of this repository.
 * `k8s` - Kubernetes YAML files
 * `postgres` - SKAD PostgreSQL Docker files and scripts
 * `VulnerabiltiyFeed` - The Vulnerability Feed service source and docker files
-* `Subscription` - The Subscription service source
+* `Subscription` - The Subscription service source and docker files
 * `VulnerabilityFeedLoader` - Utility to load CVE data into the Vulnerability Feed
 
 More services will be added as the project continues.
@@ -50,6 +50,14 @@ To build the Vulnerability Feed container image: (starting from the root of the 
 
 ```
 docker build -f VulnerabilityFeed/docker/Dockerfile -t skad-vulnfeed:latest .
+```
+
+## Building the Subscription Container Image
+
+To build the Subscription container image: (starting from the root of the repository)
+
+```
+docker build -f Subscription/docker/Dockerfile -t skad-subscription:latest .
 ```
 
 

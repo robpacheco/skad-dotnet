@@ -1,42 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vulnfeed
+  name: subscription
   namespace: skad
   labels:
-    app: vulnfeed
+    app: subscription
 spec:
   selector:
     matchLabels:
-      app: vulnfeed
+      app: subscription
   replicas: 1
   template:
     metadata:
       labels:
-        app: vulnfeed
+        app: subscription
     spec:
       containers:
-        - name: vulnfeed
-          image: skad-vulnfeed:latest
+        - name: subscription
+          image: skad-subscription:latest
           ports:
             - containerPort: 80
           imagePullPolicy: "Never" # Change this if needed.
           volumeMounts:
-          - name: config
-            mountPath: "/opt/skad/app/k8s/"
-            readOnly: true
+            - name: config
+              mountPath: "/opt/skad/app/k8s/"
+              readOnly: true
       volumes:
         - name: config
           configMap:
-            name: vulnfeed-config
+            name: subscription-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: vulnfeed
+  name: subscription
   namespace: skad
   labels:
-    app: vulnfeed
+    app: subscription
 spec:
   ports:
     - port: 80
@@ -44,4 +44,4 @@ spec:
       name: http
       
   selector:
-    app: vulnfeed
+    app: subscription
