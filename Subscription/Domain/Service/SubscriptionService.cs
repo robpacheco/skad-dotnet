@@ -28,7 +28,7 @@ namespace Skad.Subscription.Domain.Service
 
         public async Task<Data.Model.Subscription> AddSubscription(Data.Model.Subscription subscription, SubscriptionTier tier)
         {
-            subscription.DatePurchased = DateTime.Now;
+            subscription.DatePurchased = DateTime.Now.ToUniversalTime();
             subscription.DateExpires = subscription.DatePurchased.Add(TimeSpan.FromDays(tier.TierDurationDays));
             subscription.AmountPaid = tier.TierPrice;
             subscription.Active = true;
