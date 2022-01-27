@@ -60,4 +60,26 @@ To build the Subscription container image: (starting from the root of the reposi
 docker build -f Subscription/docker/Dockerfile -t skad-subscription:latest .
 ```
 
+## Running in Kubernetes
+
+### Deploying from Kustomize
+
+```
+cd k8s/manifests
+kubectl apply -k .
+```
+
+### Ensure pods are running
+
+```
+kubectl -n skad get pods
+```
+
+### Port-forward services to localhost
+
+```
+kubectl -n skad get svc
+kubectl -n skad port-forward svc/vulnfeed 5000:80
+kubectl -n skad port-forward svc/subscription 5002:80
+```
 
