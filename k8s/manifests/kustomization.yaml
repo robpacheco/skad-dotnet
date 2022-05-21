@@ -6,6 +6,7 @@ resources:
   - postgres.yaml
   - vulnfeed.yaml
   - subscription.yaml
+  - ingress.yaml
 
 configMapGenerator:
   - name: subscription-config

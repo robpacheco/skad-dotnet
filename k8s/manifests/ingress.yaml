@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: skad-ingress
+  namespace: skad
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /api/vulnerabilities
+            pathType: Prefix
+            backend:
+              service:
+                name: vulnfeed
+                port:
+                  number: 80
+          - path: /api/vulnerability-feeds
+            pathType: Prefix
+            backend:
+              service:
+                name: vulnfeed
+                port:
+                  number: 80
+          - path: /vulnerability-feed
+            pathType: Prefix
+            backend:
+              service:
+                name: vulnfeed
+                port:
+                  number: 80
+          - path: /subscription
+            pathType: Prefix
+            backend:
+              service:
+                name: subscription
+                port:
+                  number: 80
