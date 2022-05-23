@@ -34,7 +34,9 @@ namespace Skad.Subscription.MvcControllers
         [HttpPost]
         public async Task<IActionResult> Update(SubscriptionModel model)
         {
-            if (!model.Validate(_tiers, _actionContextAccessor.ActionContext.ModelState))
+            bool modelValid = model.Validate(_tiers, _actionContextAccessor.ActionContext.ModelState);
+            
+            if (!modelValid)
             {
                 return View("Subscription", model);
             }

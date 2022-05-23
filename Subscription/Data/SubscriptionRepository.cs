@@ -49,7 +49,7 @@ namespace Skad.Subscription.Data
 
         public async Task InactivateCurrentSubscriptions()
         {
-            var expireTime = DateTime.Now;
+            var expireTime = DateTime.UtcNow;
             var currentSubscriptions = await _context.Subscriptions
                 .Where(s => s.Active)
                 .ToListAsync();
