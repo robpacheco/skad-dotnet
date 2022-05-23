@@ -33,7 +33,7 @@ namespace Skad.Subscription.MvcControllers.ViewModels
                 }
             }
 
-            return modelStateDictionary.Count > 0;
+            return modelStateDictionary.IsValid;
         }
     }
 }
