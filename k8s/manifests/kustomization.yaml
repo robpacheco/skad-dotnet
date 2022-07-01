@@ -10,13 +10,9 @@ resources:
 
 configMapGenerator:
   - name: subscription-config
-    literals:
-    - Serilog__MinimumLevel__Default=Debug
     files:
       - appsettings.prod.json=settings/appsettings.subscription.json
 
   - name: vulnfeed-config
-    literals:
-      - Serilog__MinimumLevel__Default=Debug
     files:
       - appsettings.prod.json=settings/appsettings.vulnfeed.json
