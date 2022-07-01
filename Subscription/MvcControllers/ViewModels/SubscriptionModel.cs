@@ -15,7 +15,7 @@ namespace Skad.Subscription.MvcControllers.ViewModels
             {
                 modelStateDictionary.AddModelError("SubscriptionTier", "Subscription needs to be selected.");
             } 
-            else if (tiers.IsValidTierName(SubscriptionTier))
+            else if (!tiers.IsValidTierName(SubscriptionTier))
             {
                 modelStateDictionary.AddModelError("SubscriptionTier",
                     $"Subscription is not valid: {SubscriptionTier}");
