@@ -2,47 +2,56 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Skad.Common.Api.Common.Representations;
 
 namespace Skad.Common.Http
 {
     public class LinkGenerator
     {
         private readonly EndpointSettings _endpointSettings;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public LinkGenerator(IOptions<EndpointSettings> endpointSettings)
+        public LinkGenerator(IOptions<EndpointSettings> endpointSettings, IHttpContextAccessor contextAccessor)
         {
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
             _endpointSettings = endpointSettings.Value ?? throw new ArgumentNullException(nameof(endpointSettings));
         }
 
         public Uri GenerateVulnerabilityFeedUri(params string[] pathComponents)
         {
-            if (string.IsNullOrWhiteSpace(_endpointSettings.VulnerabilityFeedBaseUrl))
-            {
-                throw new Exception("VulnerabilityFeedBaseUrl must have a value.");
-            }
-            
-            var uriBuilder = new UriBuilder(_endpointSettings.VulnerabilityFeedBaseUrl)
-            {
-                Path = Path.Combine(pathComponents)
-            };
-            
+            var uriBuilder = MakeUriBuilder(_endpointSettings.VulnerabilityFeedBaseUrl);
+            uriBuilder.Path = Path.Combine(_endpointSettings.VulnerabilityFeedPrefix ?? "", Path.Combine(pathComponents));
+        
+            return uriBuilder.Uri;
+        }
+    
+        public Uri GenerateSubscriptionUri(params string[] pathComponents)
+        {
+            var uriBuilder = MakeUriBuilder(_endpointSettings.SubscriptionBaseUrl);
+            uriBuilder.Path = Path.Combine(_endpointSettings.SubscriptionPrefix ?? "", Path.Combine(pathComponents));
+        
             return uriBuilder.Uri;
         }
 
-        public Uri GenerateSubscriptionUri(params string[] pathComponents)
+        private UriBuilder MakeUriBuilder(string? settingsBaseUrl)
         {
-            if (string.IsNullOrWhiteSpace(_endpointSettings.SubscriptionBaseUrl))
+            var req = GetHttpRequest();
+            var baseUrl = $"{req.Scheme}://{req.Host}";
+            if (!string.IsNullOrWhiteSpace(settingsBaseUrl))
             {
-                throw new Exception("SubscriptionBaseUrl must have a value.");
+                baseUrl = settingsBaseUrl;
             }
-            
-            var uriBuilder = new UriBuilder(_endpointSettings.SubscriptionBaseUrl)
+
+            return new UriBuilder(baseUrl);
+        }
+
+        private HttpRequest GetHttpRequest()
+        {
+            if (_contextAccessor.HttpContext == null)
             {
-                Path = Path.Combine(pathComponents)
-            };
-            
-            return uriBuilder.Uri;
+                throw new Exception("Cannot get HttpContext.");
+            }
+
+            return _contextAccessor.HttpContext.Request;
         }
     }
 }

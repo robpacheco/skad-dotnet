@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: skad-ingress
   namespace: skad
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 
 spec:
   ingressClassName: nginx
@@ -10,28 +12,14 @@ spec:
     - host: localhost
       http:
         paths:
-          - path: /api/vulnerabilities
+          - path: /vuln(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: vulnfeed
                 port:
                   number: 80
-          - path: /api/vulnerability-feeds
-            pathType: Prefix
-            backend:
-              service:
-                name: vulnfeed
-                port:
-                  number: 80
-          - path: /vulnerability-feed
-            pathType: Prefix
-            backend:
-              service:
-                name: vulnfeed
-                port:
-                  number: 80
-          - path: /subscription
+          - path: /sub(/|$)(.*)
             pathType: Prefix
             backend:
               service:

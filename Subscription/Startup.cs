@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,12 @@ namespace Skad.Subscription
             services.Configure<EndpointSettings>(Configuration.GetSection(ENDPOINT_SETTINGS_SECTION));
             services.Configure<SubscriptionTierSettings>(Configuration.GetSection(SUBSCRIPTION_TIER_SETTINGS_SECTION));
             
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.All;
+            });
+
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             
             services.AddScoped<ISubscriptionService, SubscriptionService>();
@@ -56,6 +63,8 @@ namespace Skad.Subscription
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
