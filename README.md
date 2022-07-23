@@ -83,3 +83,8 @@ kubectl -n skad port-forward svc/vulnfeed 5000:80
 kubectl -n skad port-forward svc/subscription 5002:80
 ```
 
+### Port-Forward Ingress
+
+```
+sudo kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 80:80 
+```
