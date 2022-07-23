@@ -86,5 +86,5 @@ kubectl -n skad port-forward svc/subscription 5002:80
 ### Port-Forward Ingress
 
 ```
-sudo kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 80:80 
+kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80 
 ```
