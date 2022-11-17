@@ -16,3 +16,14 @@ configMapGenerator:
   - name: vulnfeed-config
     files:
       - appsettings.prod.json=settings/appsettings.vulnfeed.json
+
+secretGenerator:
+  - name: pgpassword
+    files:
+      - secrets/pgpassword.txt
+  - name: ingress-tls
+    files:
+      - tls.crt=secrets/localhost.pem
+      - tls.key=secrets/localhost-key.pem
+    type: "kubernetes.io/tls"
+    

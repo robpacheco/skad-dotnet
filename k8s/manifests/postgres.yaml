@@ -21,9 +21,17 @@ spec:
           ports:
           - containerPort: 5432
           env:
-          - name: POSTGRES_PASSWORD
-            value: secret # This is secret, it should not be here 
+          - name: POSTGRES_PASSWORD_FILE
+            value: "/run/secrets/postgres-passwd/pgpassword.txt" 
           imagePullPolicy: "Never" # Change this if needed.
+          volumeMounts:
+            - name: pgpassword
+              mountPath: "/run/secrets/postgres-passwd"
+              readOnly: true
+      volumes:
+        - name: pgpassword
+          secret:
+            secretName: pgpassword
 ---
 apiVersion: v1
 kind: Service

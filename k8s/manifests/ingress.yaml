@@ -26,3 +26,7 @@ spec:
                 name: subscription
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - localhost
+      secretName: ingress-tls
