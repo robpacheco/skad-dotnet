@@ -21,6 +21,13 @@ secretGenerator:
   - name: pgpassword
     files:
       - secrets/pgpassword.txt
+    options:
+      disableNameSuffixHash: true
+  - name: pgpassfile
+    files:
+      - secrets/pgpassfile
+    options:
+      disableNameSuffixHash: true
   - name: ingress-tls
     files:
       - tls.crt=secrets/localhost.pem

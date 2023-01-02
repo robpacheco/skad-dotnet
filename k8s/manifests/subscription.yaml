@@ -22,19 +22,22 @@ spec:
             - containerPort: 80
           imagePullPolicy: "Never" # Change this if needed.
           env:
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pgpassword
-                  key: "pgpassword.txt"
+            - name: PGPASSFILE
+              value: "/run/secrets/postgres/pgpassfile"
           volumeMounts:
             - name: config
               mountPath: "/opt/skad/app/k8s/"
+              readOnly: true
+            - name: pgpassfile
+              mountPath: "/run/secrets/postgres"
               readOnly: true
       volumes:
         - name: config
           configMap:
             name: subscription-config
+        - name: pgpassfile
+          secret:
+            secretName: pgpassfile
 ---
 apiVersion: v1
 kind: Service
