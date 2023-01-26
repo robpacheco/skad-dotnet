@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgres
   namespace: skad
@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: postgres
+  serviceName: "postgres"
   replicas: 1
   template:
     metadata:
@@ -37,6 +38,15 @@ spec:
         - name: pgdata
           persistentVolumeClaim:
             claimName: pgdata
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 2Gi
 ---
 apiVersion: v1
 kind: Service
@@ -46,21 +56,9 @@ metadata:
   labels:
     app: postgres
 spec:
+  clusterIP: None
   ports:
     - port: 5432
       targetPort: 5432
   selector:
     app: postgres
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pgdata
-  namespace: skad
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 2Gi
