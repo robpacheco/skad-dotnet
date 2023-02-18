@@ -1,9 +1,10 @@
 using System;
+using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
-using Skad.Common.Http;
 using Skad.Subscription.Config;
 using Skad.Subscription.Domain;
 using Skad.Subscription.Domain.Service;
@@ -17,21 +18,21 @@ namespace Skad.Subscription.MvcControllers
     {
         private readonly ISubscriptionService _subscriptionService;
         private readonly SubscriptionTiers _tiers;
-        private readonly LinkGenerator _linkGenerator;
+        private readonly SubscriptionLinkGenerator _linkGenerator;
         private readonly IActionContextAccessor _actionContextAccessor;
 
-        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, LinkGenerator linkGenerator, IActionContextAccessor actionContextAccessor)
+        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, SubscriptionLinkGenerator linkGenerator, IActionContextAccessor actionContextAccessor)
         {
             _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
             _tiers = new SubscriptionTiers(tierSettings.Value ?? throw new ArgumentNullException(nameof(tierSettings)));
             _linkGenerator = linkGenerator ?? throw new ArgumentNullException(nameof(linkGenerator));
             _actionContextAccessor = actionContextAccessor;
         }
-
+        
         public async Task<IActionResult> Index()
         {
             var subscription = await _subscriptionService.FindLatestActiveSubscription();
-            var model = subscription.ToSubscriptionViewModel();          
+            var model = subscription.ToSubscriptionViewModel(_linkGenerator);          
             return View("Subscription", model);
         }
 
@@ -55,7 +56,20 @@ namespace Skad.Subscription.MvcControllers
 
             await _subscriptionService.AddSubscription(model.ToSubscription(), tier);
             
-            return Redirect(_linkGenerator.GenerateVulnerabilityFeedUri("vulnerability-feed").ToString());
+            return Redirect(_linkGenerator.GenerateSubscriptionLink());
+        }
+        
+        [HttpGet("receipt")]
+        public IActionResult Receipt()
+        {
+            var receiptContent = _subscriptionService.FindReceipt();
+
+            if (receiptContent == null)
+            {
+                return BadRequest("no receipt found");
+            }
+            
+            return Content(receiptContent!, "text/html");
         }
     }
 }

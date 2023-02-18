@@ -18,10 +18,8 @@
         }
 
         .container2 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 20px;
         }
 
         .container3 {
@@ -34,6 +32,11 @@
         .left {
            float:left; 
            clear: left;
+        }
+
+        .right {
+           float:right; 
+           clear: right;
         }
 
         h1 {
@@ -89,33 +92,58 @@
         <div class="left">
             @Html.ValidationSummary(false, "", new { })
         </div>
-        <div class="left" style="font-weight: bold;">Update Subscription</div>
-        <div class="left">
-            @Html.RadioButtonFor(m => m.SubscriptionTier, "free")
-            @Html.Label("free", "Free")
+        <div class="container2"> <!-- Current subscription info -->
+            <div class="left">
+                <label style="font-weight: bold;">Current Subscription</label>
+                
+                @if (Model.HasReceipt) 
+                {
+                    <a href="@Model.ReceiptLink">(Latest Receipt)</a>
+                }
+            </div>
+            <div class="left">
+                @Html.Label("CurrentSubscriptionTier", "Subscription Tier: ")
+                @Html.Label("CurrentSubscriptionTier", @Model.CurrentSubscriptionTier)
+            </div>
+            <div class="left">
+                @Html.Label("AmountPaid", "Amount Paid: ")
+                @Html.Label("AmountPaid", @Model.CurrentAmountPaid)
+            </div>
+            <div class="left">
+                @Html.Label("CurrentExpires", "Expires: ")
+                @Html.Label("CurrentExpires", @Model.CurrentExpires)
+            </div>
         </div>
-        <div class="left">
-            @Html.RadioButtonFor(m => m.SubscriptionTier, "developer")
-            @Html.Label("developer", "Developer")
-        </div>
-        <div class="left">
-            @Html.RadioButtonFor(m => m.SubscriptionTier, "startup")
-            @Html.Label("startup", "Startup")
-        </div>
-        <div class="left">
-            @Html.RadioButtonFor(m => m.SubscriptionTier, "enterprise")
-            @Html.Label("enterprise", "Enterprise")
-        </div>
-        <div class="left">
-            @Html.LabelFor(m => m.NameOnCard, "Name on Card:")
-            @Html.TextBoxFor(m => m.NameOnCard)
-        </div>
-        <div class="left">
-            @Html.LabelFor(m => m.CardNumber, "Card Number:")
-            @Html.TextBoxFor(m => m.CardNumber)
+        <div class="container2"> <!-- Update subscription info -->
+            <div class="left" style="font-weight: bold;">Update Subscription</div>
+            <div class="left">
+                @Html.RadioButtonFor(m => m.SubscriptionTier, "free")
+                @Html.Label("free", "Free")
+            </div>
+            <div class="left">
+                @Html.RadioButtonFor(m => m.SubscriptionTier, "developer")
+                @Html.Label("developer", "Developer")
+            </div>
+            <div class="left">
+                @Html.RadioButtonFor(m => m.SubscriptionTier, "startup")
+                @Html.Label("startup", "Startup")
+            </div>
+            <div class="left">
+                @Html.RadioButtonFor(m => m.SubscriptionTier, "enterprise")
+                @Html.Label("enterprise", "Enterprise")
+            </div>
+            <div class="left">
+                @Html.LabelFor(m => m.NameOnCard, "Name on Card:")
+                @Html.TextBoxFor(m => m.NameOnCard)
+            </div>
+            <div class="left">
+                @Html.LabelFor(m => m.CardNumber, "Card Number:")
+                @Html.TextBoxFor(m => m.CardNumber)
+            </div>
         </div>
         <div>
             <input class="left" type="submit" value="Submit"/>
+            <a class="right" href="@Model.VulnFeedLink">Return to Vulnerability Feed</a>
         </div>
     </form>
 </div>

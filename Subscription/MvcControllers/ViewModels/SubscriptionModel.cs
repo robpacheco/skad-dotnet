@@ -1,13 +1,24 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Skad.Common.Http;
 using Skad.Subscription.Domain;
 
 namespace Skad.Subscription.MvcControllers.ViewModels
 {
-    public class SubscriptionModel 
+    public class SubscriptionModel
     {
         public string? SubscriptionTier { get; set; }
         public string? NameOnCard { get; set; }
         public string? CardNumber { get; set; }
+
+        public string CurrentSubscriptionTier { get; set; } = "no current subscription";
+        public string CurrentAmountPaid { get; set; } = "N/A";
+        public string CurrentExpires { get; set; } = "N/A";
+
+        public bool HasReceipt => ReceiptLink != null;
+
+        public string? ReceiptLink { get; set; }
+        
+        public string? VulnFeedLink { get; set;  }
         
         public bool Validate(SubscriptionTiers tiers, ModelStateDictionary modelStateDictionary)
         {

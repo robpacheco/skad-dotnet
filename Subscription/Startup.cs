@@ -14,6 +14,7 @@ using Skad.Subscription.Data;
 using Skad.Subscription.Data.Model;
 using Skad.Subscription.Domain.Repository;
 using Skad.Subscription.Domain.Service;
+using Skad.Subscription.MvcControllers.ViewModels;
 
 namespace Skad.Subscription
 {
@@ -52,7 +53,9 @@ namespace Skad.Subscription
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IReceiptManager, InMemoryReceiptManager>();
             services.AddScoped<LinkGenerator>();
+            services.AddScoped<SubscriptionLinkGenerator>();
 
             services.AddDbContext<SubscriptionDbContext>(options =>
             {

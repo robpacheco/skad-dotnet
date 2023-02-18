@@ -6,5 +6,7 @@ namespace Skad.Subscription.Domain.Service
     {
         Task<Data.Model.Subscription?> FindLatestActiveSubscription();
         Task<Data.Model.Subscription> AddSubscription(Data.Model.Subscription subscription, SubscriptionTier tier);
+        string? FindReceipt();
+        bool HasReceipt();
     }
 }
