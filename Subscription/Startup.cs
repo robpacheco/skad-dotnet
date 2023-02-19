@@ -22,6 +22,7 @@ namespace Skad.Subscription
     {
         private static string ENDPOINT_SETTINGS_SECTION = "EndpointSettings";
         private static string SUBSCRIPTION_TIER_SETTINGS_SECTION = "SubscriptionTierSettings";
+        private static string RECEIPT_SETTINGS_SECTION = "ReceiptSettings";
 
         public Startup(IConfiguration configuration)
         {
@@ -40,6 +41,7 @@ namespace Skad.Subscription
 
             services.Configure<EndpointSettings>(Configuration.GetSection(ENDPOINT_SETTINGS_SECTION));
             services.Configure<SubscriptionTierSettings>(Configuration.GetSection(SUBSCRIPTION_TIER_SETTINGS_SECTION));
+            services.Configure<ReceiptSettings>(Configuration.GetSection(RECEIPT_SETTINGS_SECTION));
             
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -53,7 +55,7 @@ namespace Skad.Subscription
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton<IReceiptManager, InMemoryReceiptManager>();
+            services.AddSingleton<IReceiptManager, FsReceiptManager>();
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 
