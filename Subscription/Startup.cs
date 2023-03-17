@@ -55,7 +55,7 @@ namespace Skad.Subscription
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton<IReceiptManager, FsReceiptManager>();
+            services.AddSingleton<IReceiptManager, InMemoryReceiptManager>();
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 

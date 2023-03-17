@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: subscription
   namespace: skad
@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: subscription
-  serviceName: "subscription"
   replicas: 1
   template:
     metadata:
@@ -32,8 +31,6 @@ spec:
             - name: pgpassfile
               mountPath: "/run/secrets/postgres"
               readOnly: true
-            - mountPath: /opt/skad/data
-              name: data
       volumes:
         - name: config
           configMap:
@@ -41,18 +38,6 @@ spec:
         - name: pgpassfile
           secret:
             secretName: pgpassfile
-        - name: data
-          persistentVolumeClaim:
-            claimName: data
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 500Mi
 ---
 apiVersion: v1
 kind: Service
