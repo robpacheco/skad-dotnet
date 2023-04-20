@@ -31,6 +31,12 @@ spec:
             - name: pgpassfile
               mountPath: "/run/secrets/postgres"
               readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /api/health/liveness
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
       volumes:
         - name: config
           configMap:

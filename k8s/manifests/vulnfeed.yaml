@@ -24,6 +24,8 @@ spec:
           env:
             - name: PGPASSFILE
               value: "/run/secrets/postgres/pgpassfile"
+            - name: LIVENESS_FAIL
+              value: "false"
           volumeMounts:
           - name: config
             mountPath: "/opt/skad/app/k8s/"
@@ -31,6 +33,12 @@ spec:
           - name: pgpassfile
             mountPath: "/run/secrets/postgres"
             readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /api/health/liveness
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
       volumes:
         - name: config
           configMap:
