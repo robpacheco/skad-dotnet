@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Skad.Common.Db;
 using Skad.Common.Http;
 using Skad.Subscription.Config;
 using Skad.Subscription.Data;
@@ -56,6 +57,7 @@ namespace Skad.Subscription
             services.AddHttpContextAccessor();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IReceiptManager, InMemoryReceiptManager>();
+            services.AddSingleton<Migrations>();
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 
