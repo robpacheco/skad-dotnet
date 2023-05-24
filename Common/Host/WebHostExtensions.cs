@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +25,7 @@ namespace Skad.Common.Host
                 };
 
                 evolve.Migrate();
+                Thread.Sleep(120000);
             }
             catch (Exception ex)
             {
