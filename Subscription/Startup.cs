@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Skad.Common.Db;
+using Skad.Common.Host;
 using Skad.Common.Http;
 using Skad.Subscription.Config;
 using Skad.Subscription.Data;
@@ -61,6 +62,8 @@ namespace Skad.Subscription
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 
+            services.AddHostedService<DbMigrationHostedService>();
+            
             services.AddDbContext<SubscriptionDbContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));

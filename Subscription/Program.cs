@@ -12,7 +12,6 @@ namespace Skad.Subscription
         {
             CreateHostBuilder(args)
                 .Build()
-                .MigrateDb()
                 .Run();
         }
 
