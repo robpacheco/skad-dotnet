@@ -35,6 +35,7 @@ public class Migrations
             };
 
             evolve.Migrate();
+            Thread.Sleep(120000);
             _migrationsComplete = true;
         }
         catch (Exception ex)
