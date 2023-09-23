@@ -13,7 +13,9 @@ namespace Skad.Subscription.MvcControllers.Extensions
                 return new SubscriptionModel()
                 {
                     SubscriptionTier = "startup",
-                    VulnFeedLink = linkGenerator.GenerateVulnFeedLink()
+                    VulnFeedLink = linkGenerator.GenerateVulnFeedLink(),
+                    LogoutLink = linkGenerator.GenerateLogoutLink(),
+                    Username = "newUser"  // TODO: Read me from auth
                 };
             }
             
@@ -26,8 +28,9 @@ namespace Skad.Subscription.MvcControllers.Extensions
                 CurrentAmountPaid = $"${subscription.AmountPaid.ToString(CultureInfo.CurrentCulture)}",
                 CurrentExpires = subscription.DateExpires.ToShortDateString(),
                 ReceiptLink = linkGenerator.GenerateSubscriptionReceiptLink(),
-                VulnFeedLink = linkGenerator.GenerateVulnFeedLink()
-
+                VulnFeedLink = linkGenerator.GenerateVulnFeedLink(),
+                LogoutLink = linkGenerator.GenerateLogoutLink(),
+                Username = "newUser"  // TODO: Read me from auth
             };
 
             return m;

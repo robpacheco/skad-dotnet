@@ -34,4 +34,9 @@ public class SubscriptionLinkGenerator
     {
         return _linkGenerator.GenerateSubscriptionUri("subscription").ToString();
     }
+
+    public string GenerateLogoutLink()
+    {
+        return _linkGenerator.GenerateVulnerabilityFeedUri("logout").ToString();
+    }
 }

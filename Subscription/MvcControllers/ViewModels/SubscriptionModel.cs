@@ -20,6 +20,10 @@ namespace Skad.Subscription.MvcControllers.ViewModels
         
         public string? VulnFeedLink { get; set;  }
         
+        public string? LogoutLink { get; set; }
+        
+        public string? Username { get; set; }
+        
         public bool Validate(SubscriptionTiers tiers, ModelStateDictionary modelStateDictionary)
         {
             if (SubscriptionTier == null)
