@@ -1,6 +1,7 @@
 using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -20,22 +21,26 @@ namespace Skad.Subscription.MvcControllers
         private readonly SubscriptionTiers _tiers;
         private readonly SubscriptionLinkGenerator _linkGenerator;
         private readonly IActionContextAccessor _actionContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, SubscriptionLinkGenerator linkGenerator, IActionContextAccessor actionContextAccessor)
+        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, SubscriptionLinkGenerator linkGenerator, IActionContextAccessor actionContextAccessor, IHttpContextAccessor httpContextAccessor)
         {
             _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
             _tiers = new SubscriptionTiers(tierSettings.Value ?? throw new ArgumentNullException(nameof(tierSettings)));
             _linkGenerator = linkGenerator ?? throw new ArgumentNullException(nameof(linkGenerator));
             _actionContextAccessor = actionContextAccessor;
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
         
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var subscription = await _subscriptionService.FindLatestActiveSubscription();
-            var model = subscription.ToSubscriptionViewModel(_linkGenerator);          
+            var model = subscription.ToSubscriptionViewModel(_linkGenerator, _httpContextAccessor);          
             return View("Subscription", model);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Update(SubscriptionModel model)
         {
@@ -59,6 +64,7 @@ namespace Skad.Subscription.MvcControllers
             return Redirect(_linkGenerator.GenerateSubscriptionLink());
         }
         
+        [Authorize]
         [HttpGet("receipt")]
         public IActionResult Receipt()
         {

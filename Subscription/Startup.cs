@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Skad.Common.Auth;
 using Skad.Common.Db;
 using Skad.Common.Host;
 using Skad.Common.Http;
@@ -51,6 +52,9 @@ namespace Skad.Subscription
                     ForwardedHeaders.All;
             });
 
+            var loginUrl = Configuration["LoginUrl"];
+            services.EnableAuth(loginUrl);
+            
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             
             services.AddScoped<ISubscriptionService, SubscriptionService>();
@@ -90,6 +94,8 @@ namespace Skad.Subscription
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

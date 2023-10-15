@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Http;
 using Skad.Common.Http;
 using Skad.Subscription.MvcControllers.ViewModels;
 
@@ -6,7 +7,7 @@ namespace Skad.Subscription.MvcControllers.Extensions
 {
     public static class SubscriptionModelExtensions
     {
-        public static SubscriptionModel ToSubscriptionViewModel(this Data.Model.Subscription? subscription, SubscriptionLinkGenerator linkGenerator)
+        public static SubscriptionModel ToSubscriptionViewModel(this Data.Model.Subscription? subscription, SubscriptionLinkGenerator linkGenerator, IHttpContextAccessor httpContextAccessor)
         {
             if (subscription == null)
             {
@@ -15,7 +16,7 @@ namespace Skad.Subscription.MvcControllers.Extensions
                     SubscriptionTier = "startup",
                     VulnFeedLink = linkGenerator.GenerateVulnFeedLink(),
                     LogoutLink = linkGenerator.GenerateLogoutLink(),
-                    Username = "newUser"  // TODO: Read me from auth
+                    Username = httpContextAccessor.HttpContext.User.Identity.Name
                 };
             }
             
@@ -30,7 +31,7 @@ namespace Skad.Subscription.MvcControllers.Extensions
                 ReceiptLink = linkGenerator.GenerateSubscriptionReceiptLink(),
                 VulnFeedLink = linkGenerator.GenerateVulnFeedLink(),
                 LogoutLink = linkGenerator.GenerateLogoutLink(),
-                Username = "newUser"  // TODO: Read me from auth
+                Username = httpContextAccessor.HttpContext.User.Identity.Name
             };
 
             return m;
