@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.14 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.18 AS build-env
 WORKDIR /app
 
 COPY Common ./Common
@@ -7,7 +7,7 @@ COPY Subscription ./Subscription
 RUN dotnet restore Subscription/Subscription.csproj
 RUN dotnet publish Subscription/Subscription.csproj -c Release -o published
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine3.14
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine3.18
 
 WORKDIR /opt/skad/
 RUN mkdir app 
