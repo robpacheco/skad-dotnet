@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: skad
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  serviceName: "redis"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.2-alpine
+          ports:
+          - containerPort: 5432
+          volumeMounts:
+            - mountPath: /usr/local/etc/redis
+              name: redisdata
+      volumes:
+        - name: redisdata
+          persistentVolumeClaim:
+            claimName: redisdata
+  volumeClaimTemplates:
+    - metadata:
+        name: redisdata
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: skad
+  labels:
+    app: redis
+spec:
+  clusterIP: None
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    app: redis

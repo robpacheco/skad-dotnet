@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace Skad.Common.Auth;
 
 public static class AuthExtensions
 {
-    public static void EnableAuth(this IServiceCollection services, string loginUrl)
+    public static void EnableAuth(this IServiceCollection services, string loginUrl, string redisUrl)
     {
         var cookieName = "skad-auth";
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
@@ -23,8 +24,9 @@ public static class AuthExtensions
             options.LoginPath = "/login";
         });
         
+        var redis = ConnectionMultiplexer.Connect(redisUrl);
         services.AddDataProtection()
             .SetApplicationName("skad")
-            .PersistKeysToFileSystem(new DirectoryInfo(Path.GetTempPath()));
+            .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
     }
 }

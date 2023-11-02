@@ -4,6 +4,7 @@ namespace: skad
 resources:
   - ns.yaml
   - postgres.yaml
+  - redis.yaml
   - vulnfeed.yaml
   - subscription.yaml
   - ingress.yaml

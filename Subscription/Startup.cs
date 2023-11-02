@@ -53,7 +53,8 @@ namespace Skad.Subscription
             });
 
             var loginUrl = Configuration["LoginUrl"];
-            services.EnableAuth(loginUrl);
+            var redisUrl = Configuration["RedisConnection"];
+            services.EnableAuth(loginUrl, redisUrl);
             
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             

@@ -44,6 +44,14 @@ docker run --name skad-pg -d -p 5432:5432 -e POSTGRES_PASSWORD=secret skad-postg
 
 Note that in this repository the password `secret` is often used. This is not a realistic password. Passwords should not be committed to repositories.
 
+## Running Redis in Docker
+
+We don't need any modifcations to the Redis image. We'll just start the offical image from DockerHub
+
+```
+docker run --name skad-redis -d -p 6379:6379 redis:7.2-alpine
+```
+
 ## Building the Vulnerability Feed Container Image
 
 To build the Vulnerability Feed container image: (starting from the root of the repository)
