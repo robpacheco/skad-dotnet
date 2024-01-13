@@ -32,7 +32,6 @@ namespace Skad.Subscription.MvcControllers
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
         
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var subscription = await _subscriptionService.FindLatestActiveSubscription();
@@ -40,7 +39,6 @@ namespace Skad.Subscription.MvcControllers
             return View("Subscription", model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Update(SubscriptionModel model)
         {
@@ -64,7 +62,6 @@ namespace Skad.Subscription.MvcControllers
             return Redirect(_linkGenerator.GenerateSubscriptionLink());
         }
         
-        [Authorize]
         [HttpGet("receipt")]
         public IActionResult Receipt()
         {

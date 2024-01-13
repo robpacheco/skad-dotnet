@@ -52,10 +52,6 @@ namespace Skad.Subscription
                     ForwardedHeaders.All;
             });
 
-            var loginUrl = Configuration["LoginUrl"];
-            var redisUrl = Configuration["RedisConnection"];
-            services.EnableAuth(loginUrl, redisUrl);
-            
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             
             services.AddScoped<ISubscriptionService, SubscriptionService>();
@@ -95,8 +91,6 @@ namespace Skad.Subscription
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
