@@ -13,14 +13,14 @@ spec:
       http:
         paths:
           - path: /vuln(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: vulnfeed
                 port:
                   number: 80
           - path: /sub(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: subscription
