@@ -1,7 +1,4 @@
 using System.Globalization;
-using Microsoft.AspNetCore.Http;
-using Skad.Common.Auth;
-using Skad.Common.Http;
 using Skad.Subscription.MvcControllers.ViewModels;
 
 namespace Skad.Subscription.MvcControllers.Extensions
