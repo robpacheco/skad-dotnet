@@ -63,6 +63,8 @@ namespace Skad.Subscription
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 
+            services.AddScoped<IUserInfoAccessor, EmptyUserInfoAccessor>();
+            
             services.AddHostedService<DbMigrationHostedService>();
             
             services.AddDbContext<SubscriptionDbContext>(options =>

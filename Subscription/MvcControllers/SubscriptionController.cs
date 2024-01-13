@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
+using Skad.Common.Auth;
 using Skad.Subscription.Config;
 using Skad.Subscription.Domain;
 using Skad.Subscription.Domain.Service;
@@ -21,21 +22,23 @@ namespace Skad.Subscription.MvcControllers
         private readonly SubscriptionTiers _tiers;
         private readonly SubscriptionLinkGenerator _linkGenerator;
         private readonly IActionContextAccessor _actionContextAccessor;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserInfoAccessor _userInfoAccessor;
 
-        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, SubscriptionLinkGenerator linkGenerator, IActionContextAccessor actionContextAccessor, IHttpContextAccessor httpContextAccessor)
+        public SubscriptionController(ISubscriptionService subscriptionService, IOptions<SubscriptionTierSettings> tierSettings, SubscriptionLinkGenerator linkGenerator, IActionContextAccessor actionContextAccessor, IUserInfoAccessor userInfoAccessor)
         {
             _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
             _tiers = new SubscriptionTiers(tierSettings.Value ?? throw new ArgumentNullException(nameof(tierSettings)));
             _linkGenerator = linkGenerator ?? throw new ArgumentNullException(nameof(linkGenerator));
             _actionContextAccessor = actionContextAccessor;
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _userInfoAccessor = userInfoAccessor ?? throw new ArgumentNullException(nameof(userInfoAccessor));
         }
         
         public async Task<IActionResult> Index()
         {
+            var userInfo = await _userInfoAccessor.FetchUserInfo();
+            var username = userInfo.Email;
             var subscription = await _subscriptionService.FindLatestActiveSubscription();
-            var model = subscription.ToSubscriptionViewModel(_linkGenerator, _httpContextAccessor);          
+            var model = subscription.ToSubscriptionViewModel(_linkGenerator, username);          
             return View("Subscription", model);
         }
 
