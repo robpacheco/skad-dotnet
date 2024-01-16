@@ -63,7 +63,8 @@ namespace Skad.Subscription
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 
-            services.AddScoped<IUserInfoAccessor, EmptyUserInfoAccessor>();
+            services.Configure<OauthSettings>(Configuration.GetSection("OauthProxySettings"));
+            services.AddScoped<IUserInfoAccessor, ProxyUserInfoAccessor>();
             
             services.AddHostedService<DbMigrationHostedService>();
             

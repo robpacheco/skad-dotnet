@@ -8,6 +8,7 @@ resources:
   - vulnfeed.yaml
   - subscription.yaml
   - ingress.yaml
+  - oauth2-proxy.yaml
 
 configMapGenerator:
   - name: subscription-config
