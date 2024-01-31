@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "Skad.Subscription.Grpc.Services";
+
+package subscription;
+
+service Subscription {
+  rpc GetActiveSubscription (SubscriptionRequest) returns (SubscriptionReply);
+}
+
+message SubscriptionRequest {}
+
+message SubscriptionReply {
+  string tier = 1;
+}

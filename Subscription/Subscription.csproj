@@ -12,6 +12,12 @@
 
   <ItemGroup>
     <PackageReference Include="Evolve" Version="3.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.60.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,4 +37,7 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Protobuf Include="Protos\subscription.proto" GrpcServices="Server" />
+  </ItemGroup>
 </Project>

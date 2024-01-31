@@ -17,6 +17,7 @@ using Skad.Subscription.Data;
 using Skad.Subscription.Data.Model;
 using Skad.Subscription.Domain.Repository;
 using Skad.Subscription.Domain.Service;
+using Skad.Subscription.Grpc.Services;
 using Skad.Subscription.MvcControllers.ViewModels;
 
 namespace Skad.Subscription
@@ -67,6 +68,8 @@ namespace Skad.Subscription
             services.AddScoped<LinkGenerator>();
             services.AddScoped<SubscriptionLinkGenerator>();
 
+            services.AddGrpc();
+            
             services.AddHostedService<DbMigrationHostedService>();
             
             services.AddDbContext<SubscriptionDbContext>(options =>
@@ -101,6 +104,7 @@ namespace Skad.Subscription
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<SubscriptionGrpcService>();
             });
         }
         
