@@ -47,6 +47,7 @@ metadata:
   labels:
     app: subscription
 spec:
+  clusterIP: None
   ports:
     - port: 80
       targetPort: 80
