@@ -1,6 +1,6 @@
-# Surviving Kubernetes as an Application Developer
+# Start to Finish Containerization and Orchestration for Developers: with Kubernetes and Docker
 
-This is the source code for the Manning liveVideo: Surviving Kubernetes as an Application Developer
+This is the source code for the Manning liveVideo `Finish Containerization and Orchestration for Developers: with Kubernetes and Docker`
 
 ## Project Layout
 
@@ -8,9 +8,9 @@ This section describes the layout of this repository.
 
 * `Common` - A .NET project for all common classes shared across services
 * `k8s` - Kubernetes YAML files
-* `postgres` - SKAD PostgreSQL Docker files and scripts
-* `VulnerabiltiyFeed` - The Vulnerability Feed service source and docker files
 * `Subscription` - The Subscription service source and docker files
+* `postgres` - PostgreSQL Docker files and scripts
+* `VulnerabilityFeed` - The Vulnerability Feed service source and docker files
 * `VulnerabilityFeedLoader` - Utility to load CVE data into the Vulnerability Feed
 
 More services will be added as the project continues.
